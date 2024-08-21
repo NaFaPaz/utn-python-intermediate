@@ -1,0 +1,4 @@
+- [ ] validate quantity
+- [ ] validate price
+- [ ] verify MVC
+- [ ] verify POO

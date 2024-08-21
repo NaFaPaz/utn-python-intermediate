@@ -25,14 +25,14 @@ class Abmc:
         sql = """CREATE TABLE productos
                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
                 producto varchar(20) NOT NULL,
-                cantidad real,
+                cantidad integer,
                 precio real)
         """
         cursor.execute(sql)
         con.commit()
 
     def alta(self, producto, cantidad, precio, tree):
-        patron = "^[A-Za-záéíóú]*$"  # regex para el campo cadena
+        patron = "^[A-Za-záéíóú\s]*$"  # regex para el campo cadena
         cadena = producto.get()
         if re.match(patron, cadena):
             print(cadena, cantidad, precio)
@@ -48,26 +48,36 @@ class Abmc:
         else:
             print("error en campo producto")
 
-    def actualizar_treeview(self, mitreview):
-        records = mitreview.get_children()
-        for element in records:
-            mitreview.delete(element)
-
-        sql = "SELECT * FROM productos ORDER BY id ASC"
+    def actualizar_treeview(self, tree):
+        self.limpiar_treeview(tree)
+        sql = "SELECT * FROM productos ORDER BY id DESC"
         con = self.conexion()
         cursor = con.cursor()
         datos = cursor.execute(sql)
-
         resultado = datos.fetchall()
         for fila in resultado:
-            print(fila)
-            mitreview.insert("", 0, text=fila[0], values=(fila[1], fila[2], fila[3]))
+            tree.insert("", 0, text=fila[0], values=(fila[1], fila[2], fila[3]))
 
-    def consultar(self):
-        global compra
-        print(compra)
+    def limpiar_treeview(self, tree):
+        for item in tree.get_children():
+            tree.delete(item)
 
-    def borrar(self, tree):
+    def consultar(self, producto, tree):
+        consulta = producto.get()
+        data = (consulta,)
+        sql = "SELECT * FROM productos WHERE producto = ?;"
+        con = self.conexion()
+        cursor = con.cursor()
+        datos = cursor.execute(sql, data).fetchall()
+        self.limpiar_treeview(tree)
+        if len(datos) <= 0:
+            return "No existe el producto"
+        else:
+            for dato in datos:
+                tree.insert("", 0, text=dato[0], values=(dato[1], dato[2], dato[3]))
+            return None
+
+    def borrar(self, input, error, tree):
         valor = tree.selection()
         print(valor)  # ('I005',)
         item = tree.item(valor)
@@ -76,12 +86,16 @@ class Abmc:
         )  # {'text': 5, 'image': '', 'values': ['daSDasd', '13.0', '2.0'], 'open': 0, 'tags': ''}
         print(item["text"])
         mi_id = item["text"]
-
-        con = self.conexion()
-        cursor = con.cursor()
-        # mi_id = int(mi_id)
-        data = (mi_id,)
-        sql = "DELETE FROM productos WHERE id = ?;"
-        cursor.execute(sql, data)
-        con.commit()
-        tree.delete(valor)
+        if mi_id == "":
+            error.config(text="Seleccione elemento para borrar", fg="red")
+        else:
+            con = self.conexion()
+            cursor = con.cursor()
+            # mi_id = int(mi_id)
+            data = (mi_id,)
+            sql = "DELETE FROM productos WHERE id = ?;"
+            cursor.execute(sql, data)
+            con.commit()
+            tree.delete(valor)
+            input.set("")
+            error.config(text="Elemento borrado exitosamente", fg="red")
