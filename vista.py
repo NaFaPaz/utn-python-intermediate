@@ -10,16 +10,15 @@ import modelo
 class Panel:
     def __init__(self, window):
         self.root = window
-        self.root.title("Tarea POO")
+        self.root.title("STOCK")
         self.titulo = Label(
             self.root,
-            text="Ingrese sus datos",
-            bg="DarkOrchid3",
-            fg="thistle1",
-            height=1,
+            text="G e s t i o n   d e   P r o d u c t o s",
+            bg="SteelBlue1",
+            height=2,
             width=60,
         )
-        self.titulo.grid(row=0, column=0, columnspan=4, padx=1, pady=1, sticky=W + E)
+        self.titulo.grid(row=0, column=0, columnspan=4, pady=5, sticky=W + E)
 
         self.objeto = modelo.Abmc()
 
@@ -30,22 +29,42 @@ class Panel:
             print("Error")
 
         self.producto = Label(self.root, text="Producto")
-        self.producto.grid(row=1, column=0, sticky=W)
+        self.producto.grid(row=1, column=0, padx=15, pady=5, sticky=W)
         self.cantidad = Label(self.root, text="Cantidad")
-        self.cantidad.grid(row=2, column=0, sticky=W)
+        self.cantidad.grid(row=2, column=0, padx=15, pady=5, sticky=W)
         self.precio = Label(self.root, text="Precio")
-        self.precio.grid(row=3, column=0, sticky=W)
+        self.precio.grid(row=3, column=0, padx=15, pady=(0, 5), sticky=W)
 
         # Defino variables para tomar valores de campos de entrada
-        self.a_val, self.b_val, self.c_val = StringVar(), DoubleVar(), DoubleVar()
-        w_ancho = 20
+        self.a_val, self.b_val, self.c_val = StringVar(), IntVar(), DoubleVar()
+        w_ancho = 21
 
-        self.entrada1 = Entry(self.root, textvariable=self.a_val, width=w_ancho)
+        self.error1 = Label(self.root, text="", fg="red")
+        self.error1.grid(row=1, column=2, columnspan=3)
+        self.error2 = Label(self.root, text="", fg="red")
+        self.error2.grid(row=2, column=2, columnspan=3)
+        self.error3 = Label(self.root, text="", fg="red")
+        self.error3.grid(row=3, column=2, columnspan=3)
+
+        # Register validation
+        self.vcmd = self.root.register(self.validate_length)
+
+        # INPUTS
+        self.entrada1 = Entry(
+            self.root,
+            textvariable=self.a_val,
+            width=w_ancho,
+            validate="key",
+            validatecommand=(self.vcmd, "%P", 20),
+        )
         self.entrada1.grid(row=1, column=1)
+        self.entrada1.bind("<Button-1>", lambda _: self.clear(self.a_val, self.error1))
         self.entrada2 = Entry(self.root, textvariable=self.b_val, width=w_ancho)
         self.entrada2.grid(row=2, column=1)
+        self.entrada2.bind("<Button-1>", lambda _: self.clear(self.b_val, self.error2))
         self.entrada3 = Entry(self.root, textvariable=self.c_val, width=w_ancho)
         self.entrada3.grid(row=3, column=1)
+        self.entrada3.bind("<Button-1>", lambda _: self.clear(self.c_val, self.error3))
 
         # --------------------------------------------------
         # TREEVIEW
@@ -59,27 +78,81 @@ class Panel:
         self.tree.column("col3", width=200, minwidth=80)
         self.tree.heading("#0", text="ID")
         self.tree.heading("col1", text="Producto")
-        self.tree.heading("col2", text="cantidad")
-        self.tree.heading("col3", text="precio")
-        self.tree.grid(row=10, column=0, columnspan=4)
+        self.tree.heading("col2", text="Cantidad")
+        self.tree.heading("col3", text="Precio")
+        self.tree.grid(row=10, column=0, columnspan=4, pady=(5, 0))
 
         self.boton_alta = Button(
             self.root,
             text="Alta",
-            command=lambda: self.objeto.alta(
-                self.a_val, self.b_val.get(), self.c_val.get(), self.tree
-            ),
+            width=w_ancho - 5,
+            command=lambda: self.validate_create(),
         )
-        self.boton_alta.grid(row=6, column=1)
+        self.boton_alta.grid(row=4, column=1, pady=5)
 
         self.boton_consulta = Button(
-            self.root, text="Consultar", command=lambda: self.objeto.consultar()
+            self.root,
+            text="Consultar",
+            width=w_ancho - 5,
+            command=lambda: self.validate_query(),
         )
-        self.boton_consulta.grid(row=7, column=1)
+        self.boton_consulta.grid(row=5, column=1, pady=5)
 
         self.boton_borrar = Button(
             self.root,
             text="Borrar",
-            command=lambda: self.objeto.borrar(self.tree),
+            width=w_ancho - 5,
+            command=lambda: self.objeto.borrar(self.a_val, self.error1, self.tree),
         )
-        self.boton_borrar.grid(row=8, column=1)
+        self.boton_borrar.grid(row=6, column=1, pady=5)
+
+        self.boton_listar = Button(
+            self.root,
+            text="Listar productos",
+            command=lambda: self.objeto.actualizar_treeview(self.tree),
+        )
+        self.boton_listar.grid(row=4, column=3, pady=5)
+
+        self.boton_limpiar = Button(
+            self.root,
+            text="Limpiar",
+            command=lambda: self.objeto.limpiar_treeview(self.tree),
+        )
+        self.boton_limpiar.grid(row=6, column=3, pady=5)
+
+    def clear_error(self, error):
+        error.config(text="")
+
+    def clear(self, input, error):
+        self.clear_error(error)
+        input.set("")
+
+    # VALIDATIONS #
+    def validate_length(self, char, max_length):
+        max_char = len(char)
+        max_len = int(max_length)
+        if max_char == max_len:
+            self.error1.config(text="Maximo 20 caracteres")
+        return max_char <= max_len
+
+    def validate_empty(self, input):
+        return input.get().strip() == ""
+
+    def validate_create(
+        self,
+    ):
+        if self.validate_empty(self.a_val):
+            self.error1.config(text="Ingrese nombre de producto")
+        else:
+            self.objeto.alta(self.a_val, self.b_val.get(), self.c_val.get(), self.tree)
+
+    def validate_query(
+        self,
+    ):
+        self.clear_error(self.error1)
+        if self.validate_empty(self.a_val):
+            self.error1.config(text="Ingrese producto a consultar")
+        else:
+            response = self.objeto.consultar(self.a_val, self.tree)
+            if response != None:
+                self.error1.config(text=response)
