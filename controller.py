@@ -18,7 +18,7 @@ if __name__ == "__main__":
     root.update_idletasks()  # This ensures that the geometry information is up-to-date
     current_width = root.winfo_width()
     current_height = root.winfo_height()
-
+    root.resizable(False, False)
     # Window starting position
     x_position = (screen_width // 2) - (current_width * 2)
     y_position = (screen_height // 2) - (current_height * 2)
