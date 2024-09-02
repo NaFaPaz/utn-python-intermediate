@@ -35,18 +35,18 @@ class Abmc:
         patron = "^[A-Za-záéíóú\s]*$"  # regex para el campo cadena
         cadena = producto.get()
         if re.match(patron, cadena):
-            print(cadena, cantidad, precio)
             con = self.conexion()
             cursor = con.cursor()
-            data = (cadena, cantidad, precio)
+            data = (cadena.strip(), int(cantidad.get()), float(precio.get()))
             sql = "INSERT INTO productos(producto, cantidad, precio) VALUES(?, ?, ?)"
             cursor.execute(sql, data)
             con.commit()
             producto.set("")
-            print("Estoy en alta todo ok")
+            cantidad.set("")
+            precio.set("")
             self.actualizar_treeview(tree)
         else:
-            print("error en campo producto")
+            return "Error en nombre de producto"
 
     def actualizar_treeview(self, tree):
         self.limpiar_treeview(tree)
@@ -63,7 +63,7 @@ class Abmc:
             tree.delete(item)
 
     def consultar(self, producto, tree):
-        consulta = producto.get()
+        consulta = producto.get().strip()
         data = (consulta,)
         sql = "SELECT * FROM productos WHERE producto = ?;"
         con = self.conexion()

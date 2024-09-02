@@ -18,7 +18,7 @@ class Panel:
             height=2,
             width=60,
         )
-        self.titulo.grid(row=0, column=0, columnspan=4, pady=5, sticky=W + E)
+        self.titulo.grid(row=0, column=0, columnspan=5, pady=5, sticky=W + E)
 
         self.objeto = modelo.Abmc()
 
@@ -36,7 +36,7 @@ class Panel:
         self.precio.grid(row=3, column=0, padx=15, pady=(0, 5), sticky=W)
 
         # Defino variables para tomar valores de campos de entrada
-        self.a_val, self.b_val, self.c_val = StringVar(), IntVar(), DoubleVar()
+        self.a_val, self.b_val, self.c_val = StringVar(), StringVar(), StringVar()
         w_ancho = 21
 
         self.error1 = Label(self.root, text="", fg="red")
@@ -72,15 +72,28 @@ class Panel:
 
         self.tree = ttk.Treeview(self.root)
         self.tree["columns"] = ("col1", "col2", "col3")
-        self.tree.column("#0", width=90, minwidth=50, anchor=W)
+        self.tree.column("#0", width=90, minwidth=50)
         self.tree.column("col1", width=200, minwidth=80)
-        self.tree.column("col2", width=200, minwidth=80)
-        self.tree.column("col3", width=200, minwidth=80)
+        self.tree.column("col2", width=200, minwidth=80, anchor="center")
+        self.tree.column("col3", width=200, minwidth=80, anchor="center")
         self.tree.heading("#0", text="ID")
         self.tree.heading("col1", text="Producto")
         self.tree.heading("col2", text="Cantidad")
         self.tree.heading("col3", text="Precio")
         self.tree.grid(row=10, column=0, columnspan=4, pady=(5, 0))
+
+        scrollbar = ttk.Scrollbar(self.root, orient="vertical", command=self.tree.yview)
+        self.tree.configure(yscrollcommand=scrollbar.set)
+        scrollbar.grid(row=10, column=4, sticky="ns")
+
+        def on_treeview_click(event):
+            self.clear_errors()
+
+        self.tree.bind("<Button-1>", on_treeview_click)
+
+        # --------------------------------------------------
+        # BUTTONS
+        # --------------------------------------------------
 
         self.boton_alta = Button(
             self.root,
@@ -116,16 +129,29 @@ class Panel:
         self.boton_limpiar = Button(
             self.root,
             text="Limpiar",
-            command=lambda: self.objeto.limpiar_treeview(self.tree),
+            command=lambda: self.clear_all(),
         )
         self.boton_limpiar.grid(row=6, column=3, pady=5)
 
     def clear_error(self, error):
         error.config(text="")
 
+    def clear_errors(
+        self,
+    ):
+        self.clear_error(self.error1)
+        self.clear_error(self.error2)
+        self.clear_error(self.error3)
+
     def clear(self, input, error):
         self.clear_error(error)
         input.set("")
+
+    def clear_all(
+        self,
+    ):
+        self.clear_errors()
+        self.objeto.limpiar_treeview(self.tree)
 
     # VALIDATIONS #
     def validate_length(self, char, max_length):
@@ -135,24 +161,54 @@ class Panel:
             self.error1.config(text="Maximo 20 caracteres")
         return max_char <= max_len
 
-    def validate_empty(self, input):
+    def is_empty(self, input):
         return input.get().strip() == ""
 
     def validate_create(
         self,
     ):
-        if self.validate_empty(self.a_val):
-            self.error1.config(text="Ingrese nombre de producto")
-        else:
-            self.objeto.alta(self.a_val, self.b_val.get(), self.c_val.get(), self.tree)
+        valid_product = self.validate_product()
+        valid_quantity = self.validate_quantity()
+        valid_price = self.validate_price()
+        if valid_product and valid_quantity and valid_price:
+            response = self.objeto.alta(self.a_val, self.b_val, self.c_val, self.tree)
+            if response:
+                self.error1.config(text=response)
 
     def validate_query(
         self,
     ):
         self.clear_error(self.error1)
-        if self.validate_empty(self.a_val):
+        if self.is_empty(self.a_val):
             self.error1.config(text="Ingrese producto a consultar")
         else:
             response = self.objeto.consultar(self.a_val, self.tree)
             if response != None:
                 self.error1.config(text=response)
+
+    def validate_product(
+        self,
+    ):
+        if self.is_empty(self.a_val):
+            self.error1.config(text="Ingrese producto")
+            return False
+        else:
+            return True
+
+    def validate_quantity(
+        self,
+    ):
+        if self.is_empty(self.b_val):
+            self.error2.config(text="Ingrese cantidad")
+            return False
+        else:
+            return True
+
+    def validate_price(
+        self,
+    ):
+        if self.is_empty(self.c_val):
+            self.error3.config(text="Ingrese precio")
+            return False
+        else:
+            return True
