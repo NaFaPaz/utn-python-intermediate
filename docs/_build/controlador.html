@@ -104,35 +104,129 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="controlador.Controller.alta">
 <span class="sig-name descname"><span class="pre">alta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controlador.html#Controller.alta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controlador.Controller.alta" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#controlador.Controller.alta'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Maneja el proceso de alta de un nuevo producto.</p>
+<p>Llama a la función <cite>validar_alta</cite> para validar y agregar un nuevo producto.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="controlador.Controller.borrar">
 <span class="sig-name descname"><span class="pre">borrar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controlador.html#Controller.borrar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controlador.Controller.borrar" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#controlador.Controller.borrar'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Maneja el proceso de eliminación de un producto.</p>
+<p>Elimina el producto seleccionado de la vista. Muestra un mensaje de error si no se selecciona ningún elemento.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="controlador.Controller.consulta">
 <span class="sig-name descname"><span class="pre">consulta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">producto</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/controlador.html#Controller.consulta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controlador.Controller.consulta" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#controlador.Controller.consulta'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Realiza una consulta de productos basado en el nombre proporcionado.</p>
+<p>Muestra un mensaje de error si el producto no se encuentra. De lo contrario, limpia la vista y muestra los resultados.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>producto</strong> (<em>tkinter.StringVar</em>) – El nombre del producto a consultar.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="controlador.Controller.es_vacio">
 <span class="sig-name descname"><span class="pre">es_vacio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/controlador.html#Controller.es_vacio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controlador.Controller.es_vacio" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#controlador.Controller.es_vacio'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Verifica si el campo de entrada está vacío.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input</strong> (<em>tkinter.StringVar</em>) – El campo de entrada a verificar.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> si el campo de entrada está vacío, de lo contrario <cite>False</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="controlador.Controller.listar">
 <span class="sig-name descname"><span class="pre">listar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controlador.html#Controller.listar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controlador.Controller.listar" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#controlador.Controller.listar'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Lista todos los productos disponibles en la vista.</p>
+<p>Limpia la vista y muestra todos los productos almacenados. Muestra un mensaje de error si no se encuentran productos.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="controlador.Controller.validar_alta">
 <span class="sig-name descname"><span class="pre">validar_alta</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/controlador.html#Controller.validar_alta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controlador.Controller.validar_alta" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#controlador.Controller.validar_alta'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Valida los campos de entrada y agrega un nuevo producto si los datos son válidos.</p>
+<p>Valida los campos de entrada para el nombre del producto, cantidad y precio. Si todos los datos son válidos, llama a la función <cite>alta</cite> de <cite>Model</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="controlador.Controller.validar_consulta">
 <span class="sig-name descname"><span class="pre">validar_consulta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">producto</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/controlador.html#Controller.validar_consulta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controlador.Controller.validar_consulta" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#controlador.Controller.validar_consulta'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Valida el campo de entrada para la consulta y retorna los resultados de la consulta.</p>
+<p>Limpia el error de la vista y valida que el campo de producto no esté vacío antes de realizar la consulta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>producto</strong> (<em>tkinter.StringVar</em>) – El nombre del producto a consultar.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Lista de tuplas con los datos de los productos que coinciden.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of tuples</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="controlador.Controller.validar_input">
 <span class="sig-name descname"><span class="pre">validar_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error_text</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/controlador.html#Controller.validar_input"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#controlador.Controller.validar_input" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#controlador.Controller.validar_input'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Valida si el campo de entrada no está vacío y muestra un mensaje de error si es necesario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> (<em>tkinter.StringVar</em>) – El campo de entrada a validar.</p></li>
+<li><p><strong>error</strong> (<em>tkinter.Label</em>) – El widget de error donde se mostrará el mensaje.</p></li>
+<li><p><strong>error_text</strong> (<em>str</em>) – El mensaje de error a mostrar.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><cite>True</cite> si el campo de entrada no está vacío, de lo contrario <cite>False</cite>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
 </dd></dl>
 </section>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
