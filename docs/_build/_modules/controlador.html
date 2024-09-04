@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>controlador &#8212; PYTHON-INTERMEDIATE 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for controlador</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">tkinter</span> <span class="kn">import</span> <span class="n">Tk</span>
+<span class="kn">from</span> <span class="nn">vista</span> <span class="kn">import</span> <span class="n">View</span>
+<span class="kn">from</span> <span class="nn">modelo</span> <span class="kn">import</span> <span class="n">Model</span>
+
+
+<div class="viewcode-block" id="Controller">
+<a class="viewcode-back" href="../controlador.html#controlador.Controller">[docs]</a>
+<span class="k">class</span> <span class="nc">Controller</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modelo</span> <span class="o">=</span> <span class="n">Model</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vista</span> <span class="o">=</span> <span class="n">View</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Controller.alta">
+<a class="viewcode-back" href="../controlador.html#controlador.Controller.alta">[docs]</a>
+    <span class="k">def</span> <span class="nf">alta</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validar_alta</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Controller.consulta">
+<a class="viewcode-back" href="../controlador.html#controlador.Controller.consulta">[docs]</a>
+    <span class="k">def</span> <span class="nf">consulta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">producto</span><span class="p">):</span>
+        <span class="n">resultado</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validar_consulta</span><span class="p">(</span><span class="n">producto</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">error1</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Producto no encontrado&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">limpiar_treeview</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">dato</span> <span class="ow">in</span> <span class="n">resultado</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                    <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">dato</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="p">(</span><span class="n">dato</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dato</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">dato</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Controller.borrar">
+<a class="viewcode-back" href="../controlador.html#controlador.Controller.borrar">[docs]</a>
+    <span class="k">def</span> <span class="nf">borrar</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">seleccion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">selection</span><span class="p">()</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">seleccion</span><span class="p">)</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">id</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">error1</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Seleccione 1 elemento del listado&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">resultado</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelo</span><span class="o">.</span><span class="n">borrar</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">resultado</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">error1</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">resultado</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">limpiar_treeview</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Controller.listar">
+<a class="viewcode-back" href="../controlador.html#controlador.Controller.listar">[docs]</a>
+    <span class="k">def</span> <span class="nf">listar</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">limpiar_todo</span><span class="p">()</span>
+        <span class="n">resultado</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelo</span><span class="o">.</span><span class="n">productos</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">resultado</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">error1</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;No se encontraron productos&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">fila</span> <span class="ow">in</span> <span class="n">resultado</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                    <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">fila</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">values</span><span class="o">=</span><span class="p">(</span><span class="n">fila</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">fila</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">fila</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+                <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Controller.validar_alta">
+<a class="viewcode-back" href="../controlador.html#controlador.Controller.validar_alta">[docs]</a>
+    <span class="k">def</span> <span class="nf">validar_alta</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">producto_valido</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validar_input</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">a_val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">error1</span><span class="p">,</span> <span class="s2">&quot;Ingrese producto&quot;</span>
+        <span class="p">)</span>
+        <span class="n">cantidad_valida</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validar_input</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">b_val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">error2</span><span class="p">,</span> <span class="s2">&quot;Ingrese cantidad&quot;</span>
+        <span class="p">)</span>
+        <span class="n">precio_valido</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validar_input</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">c_val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">error3</span><span class="p">,</span> <span class="s2">&quot;Ingrese precio&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">producto_valido</span> <span class="ow">and</span> <span class="n">cantidad_valida</span> <span class="ow">and</span> <span class="n">precio_valido</span><span class="p">:</span>
+            <span class="n">resultado</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelo</span><span class="o">.</span><span class="n">alta</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">a_val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">b_val</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">c_val</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">resultado</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">error1</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">resultado</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Controller.es_vacio">
+<a class="viewcode-back" href="../controlador.html#controlador.Controller.es_vacio">[docs]</a>
+    <span class="k">def</span> <span class="nf">es_vacio</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">input</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="Controller.validar_consulta">
+<a class="viewcode-back" href="../controlador.html#controlador.Controller.validar_consulta">[docs]</a>
+    <span class="k">def</span> <span class="nf">validar_consulta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">producto</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">limpiar_error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">error1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">es_vacio</span><span class="p">(</span><span class="n">producto</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vista</span><span class="o">.</span><span class="n">error1</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Ingrese producto a consultar&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">modelo</span><span class="o">.</span><span class="n">consultar</span><span class="p">(</span><span class="n">producto</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Controller.validar_input">
+<a class="viewcode-back" href="../controlador.html#controlador.Controller.validar_input">[docs]</a>
+    <span class="k">def</span> <span class="nf">validar_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">error_text</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">es_vacio</span><span class="p">(</span><span class="nb">input</span><span class="p">):</span>
+            <span class="n">error</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">error_text</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+</div>
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="p">()</span>
+    <span class="c1"># Screen dimensions</span>
+    <span class="n">screen_width</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_screenwidth</span><span class="p">()</span>
+    <span class="n">screen_height</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_screenheight</span><span class="p">()</span>
+    <span class="c1"># Window dimensions</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">update_idletasks</span><span class="p">()</span>
+    <span class="n">current_width</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_width</span><span class="p">()</span>
+    <span class="n">current_height</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">winfo_height</span><span class="p">()</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">resizable</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># Window starting position</span>
+    <span class="n">x_position</span> <span class="o">=</span> <span class="p">(</span><span class="n">screen_width</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">current_width</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">y_position</span> <span class="o">=</span> <span class="p">(</span><span class="n">screen_height</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">current_height</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">geometry</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;+</span><span class="si">{</span><span class="n">x_position</span><span class="si">}</span><span class="s2">+</span><span class="si">{</span><span class="n">y_position</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">mi_app</span> <span class="o">=</span> <span class="n">Controller</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="n">root</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PYTHON-INTERMEDIATE</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../controlador.html">controlador module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelo.html">modelo module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vista.html">vista module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Nahuel Damian Fanego Paz / Cristian Luciano Moreno.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

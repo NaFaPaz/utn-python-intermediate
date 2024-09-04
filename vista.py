@@ -6,6 +6,12 @@ from tkinter import ttk
 # ##############################################
 # VISTA
 # ##############################################
+
+"""
+vista.py
+    vista vista vista vista.
+"""
+
 class View:
     def __init__(self, window, controller):
         self.root = window
@@ -158,6 +164,18 @@ class View:
         self.limpiar_treeview()
 
     def validar_longitud(self, char, max_length):
+        """
+        Valida si la longitud de la cadena `char` es menor o igual a `max_length`.
+
+        Si la longitud de `char` es igual a `max_length`, muestra un mensaje de error indicando que el límite de caracteres es 20.
+
+        :param char: La cadena que se desea validar.
+        :type char: str
+        :param max_length: La longitud máxima permitida para `char`.
+        :type max_length: int
+        :return: `True` si la longitud de `char` es menor o igual a `max_length`, de lo contrario `False`.
+        :rtype: bool
+        """
         max_char = len(char)
         max_len = int(max_length)
         if max_char == max_len:

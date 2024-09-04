@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>modelo &#8212; PYTHON-INTERMEDIATE 0.0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=12dfc556" />
+    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for modelo</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<span class="c1"># ##############################################</span>
+<span class="c1"># MODELO</span>
+<span class="c1"># ##############################################</span>
+<div class="viewcode-block" id="Model">
+<a class="viewcode-back" href="../modelo.html#modelo.Model">[docs]</a>
+<span class="k">class</span> <span class="nc">Model</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conexion</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crear_tabla</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Model.conexion">
+<a class="viewcode-back" href="../modelo.html#modelo.Model.conexion">[docs]</a>
+    <span class="k">def</span> <span class="nf">conexion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">con</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;mibase.db&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">con</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error en conexion: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Model.crear_tabla">
+<a class="viewcode-back" href="../modelo.html#modelo.Model.crear_tabla">[docs]</a>
+    <span class="k">def</span> <span class="nf">crear_tabla</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;CREATE TABLE IF NOT EXISTS productos</span>
+<span class="s2">                    (id INTEGER PRIMARY KEY AUTOINCREMENT,</span>
+<span class="s2">                    producto varchar(20) NOT NULL,</span>
+<span class="s2">                    cantidad integer,</span>
+<span class="s2">                    precio real)</span>
+<span class="s2">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error al crear la tabla: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Model.alta">
+<a class="viewcode-back" href="../modelo.html#modelo.Model.alta">[docs]</a>
+    <span class="k">def</span> <span class="nf">alta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">producto</span><span class="p">,</span> <span class="n">cantidad</span><span class="p">,</span> <span class="n">precio</span><span class="p">):</span>
+        <span class="n">patron</span> <span class="o">=</span> <span class="s2">&quot;^[A-Za-záéíóú\s]*$&quot;</span>
+        <span class="n">cadena</span> <span class="o">=</span> <span class="n">producto</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">patron</span><span class="p">,</span> <span class="n">cadena</span><span class="p">):</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">cadena</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cantidad</span><span class="o">.</span><span class="n">get</span><span class="p">()),</span> <span class="nb">float</span><span class="p">(</span><span class="n">precio</span><span class="o">.</span><span class="n">get</span><span class="p">()))</span>
+                <span class="n">sql</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">&quot;INSERT INTO productos(producto, cantidad, precio) VALUES(?, ?, ?)&quot;</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="n">producto</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">cantidad</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="n">precio</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="s2">&quot;Producto agregado exitosamente&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;Error en nombre de producto&quot;</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error al insertar producto: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Model.productos">
+<a class="viewcode-back" href="../modelo.html#modelo.Model.productos">[docs]</a>
+    <span class="k">def</span> <span class="nf">productos</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM productos ORDER BY id DESC&quot;</span>
+            <span class="n">con</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conexion</span><span class="p">()</span>
+            <span class="n">cursor</span> <span class="o">=</span> <span class="n">con</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+            <span class="n">datos</span> <span class="o">=</span> <span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">datos</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error en listar productos: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="Model.consultar">
+<a class="viewcode-back" href="../modelo.html#modelo.Model.consultar">[docs]</a>
+    <span class="k">def</span> <span class="nf">consultar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">producto</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">consulta</span> <span class="o">=</span> <span class="n">producto</span><span class="o">.</span><span class="n">get</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">consulta</span><span class="p">,)</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM productos WHERE producto = ?;&quot;</span>
+            <span class="n">datos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">datos</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error en consulta: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="Model.borrar">
+<a class="viewcode-back" href="../modelo.html#modelo.Model.borrar">[docs]</a>
+    <span class="k">def</span> <span class="nf">borrar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seleccion</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">seleccion</span><span class="p">,)</span>
+            <span class="n">sql</span> <span class="o">=</span> <span class="s2">&quot;DELETE FROM productos WHERE id = ?;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cursor</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">con</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">return</span> <span class="s2">&quot;Producto eliminado exitosamente&quot;</span>
+        <span class="k">except</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error en borrado: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">&quot;No se pudo borrar&quot;</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">PYTHON-INTERMEDIATE</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../controlador.html">controlador module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modelo.html">modelo module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vista.html">vista module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Nahuel Damian Fanego Paz / Cristian Luciano Moreno.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
