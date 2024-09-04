@@ -173,9 +173,15 @@
 
 <div class="viewcode-block" id="View.limpiar_treeview">
 <a class="viewcode-back" href="../vista.html#vista.View.limpiar_treeview">[docs]</a>
-    <span class="k">def</span> <span class="nf">limpiar_treeview</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-    <span class="p">):</span>
+    <span class="k">def</span> <span class="nf">limpiar_treeview</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Elimina todos los elementos de `tree`.</span>
+
+<span class="sd">        Esta función borra todos los elementos del `Treeview` que está asociado al atributo `tree` del objeto.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">get_children</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
 
@@ -183,6 +189,16 @@
 <div class="viewcode-block" id="View.limpiar_error">
 <a class="viewcode-back" href="../vista.html#vista.View.limpiar_error">[docs]</a>
     <span class="k">def</span> <span class="nf">limpiar_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Limpia el mensaje de error en la instancia proporcionada.</span>
+
+<span class="sd">        Esta función establece el texto `error` a una cadena vacía, eliminando cualquier mensaje de error visible.</span>
+
+<span class="sd">        :param error: El widget de error que se desea limpiar.</span>
+<span class="sd">        :type error: tkinter.Label</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">error</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
 
 
@@ -191,6 +207,14 @@
     <span class="k">def</span> <span class="nf">limpiar_errores</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Limpia todos los mensajes de error en los widgets de error predefinidos.</span>
+
+<span class="sd">        Esta función llama a `limpiar_error` para limpiar los mensajes de error en `error1`, `error2` y `error3`.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">limpiar_error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">limpiar_error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">limpiar_error</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error3</span><span class="p">)</span></div>
@@ -199,6 +223,18 @@
 <div class="viewcode-block" id="View.limpiar">
 <a class="viewcode-back" href="../vista.html#vista.View.limpiar">[docs]</a>
     <span class="k">def</span> <span class="nf">limpiar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">error</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Limpia el texto de entrada y el mensaje de error asociado.</span>
+
+<span class="sd">        Esta función llama a `limpiar_error` para limpiar el mensaje de error del widget `error` y establece el valor de `input` a una cadena vacía.</span>
+
+<span class="sd">        :param input: La variable de entrada que se desea limpiar.</span>
+<span class="sd">        :type input: tkinter.StringVar</span>
+<span class="sd">        :param error: El widget de error que se desea limpiar.</span>
+<span class="sd">        :type error: tkinter.Label</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">limpiar_error</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
         <span class="nb">input</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span></div>
 
@@ -208,6 +244,14 @@
     <span class="k">def</span> <span class="nf">limpiar_todo</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Limpia todos los mensajes de error y el contenido del `Treeview`.</span>
+
+<span class="sd">        Esta función llama a `limpiar_errores` para limpiar todos los mensajes de error y a `limpiar_treeview` para eliminar todos los elementos del `Treeview`.</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        :rtype: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">limpiar_errores</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">limpiar_treeview</span><span class="p">()</span></div>
 

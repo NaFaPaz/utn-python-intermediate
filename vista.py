@@ -137,29 +137,73 @@ class View:
         )
         self.boton_limpiar.grid(row=6, column=3, pady=5)
 
-    def limpiar_treeview(
-        self,
-    ):
+    def limpiar_treeview(self,):
+        """
+        Elimina todos los elementos de `tree`.
+
+        Esta función borra todos los elementos del `Treeview` que está asociado al atributo `tree` del objeto.
+
+        :return: None
+        :rtype: None
+        """
         for item in self.tree.get_children():
             self.tree.delete(item)
 
     def limpiar_error(self, error):
+        """
+        Limpia el mensaje de error en la instancia proporcionada.
+
+        Esta función establece el texto `error` a una cadena vacía, eliminando cualquier mensaje de error visible.
+
+        :param error: El widget de error que se desea limpiar.
+        :type error: tkinter.Label
+        :return: None
+        :rtype: None
+        """
         error.config(text="")
 
     def limpiar_errores(
         self,
     ):
+        """
+        Limpia todos los mensajes de error en los widgets de error predefinidos.
+
+        Esta función llama a `limpiar_error` para limpiar los mensajes de error en `error1`, `error2` y `error3`.
+
+        :return: None
+        :rtype: None
+        """
         self.limpiar_error(self.error1)
         self.limpiar_error(self.error2)
         self.limpiar_error(self.error3)
 
     def limpiar(self, input, error):
+        """
+        Limpia el texto de entrada y el mensaje de error asociado.
+
+        Esta función llama a `limpiar_error` para limpiar el mensaje de error del widget `error` y establece el valor de `input` a una cadena vacía.
+
+        :param input: La variable de entrada que se desea limpiar.
+        :type input: tkinter.StringVar
+        :param error: El widget de error que se desea limpiar.
+        :type error: tkinter.Label
+        :return: None
+        :rtype: None
+        """
         self.limpiar_error(error)
         input.set("")
 
     def limpiar_todo(
         self,
     ):
+        """
+        Limpia todos los mensajes de error y el contenido del `Treeview`.
+
+        Esta función llama a `limpiar_errores` para limpiar todos los mensajes de error y a `limpiar_treeview` para eliminar todos los elementos del `Treeview`.
+
+        :return: None
+        :rtype: None
+        """
         self.limpiar_errores()
         self.limpiar_treeview()
 
