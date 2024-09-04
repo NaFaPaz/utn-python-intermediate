@@ -78,6 +78,7 @@ class Controller:
         self.vista.limpiar_error(self.vista.error1)
         if self.es_vacio(producto):
             self.vista.error1.config(text="Ingrese producto a consultar")
+            return []
         else:
             return self.modelo.consultar(producto)
 
