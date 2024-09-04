@@ -104,27 +104,102 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="modelo.Model.alta">
 <span class="sig-name descname"><span class="pre">alta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">producto</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cantidad</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precio</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modelo.html#Model.alta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modelo.Model.alta" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#modelo.Model.alta'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Agrega un nuevo producto a la tabla <cite>productos</cite>.</p>
+<p>Valida que el nombre del producto contenga solo letras y espacios. Inserta el producto en la base de datos si la validación es correcta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>producto</strong> (<em>tkinter.StringVar</em>) – El nombre del producto.</p></li>
+<li><p><strong>cantidad</strong> (<em>tkinter.StringVar</em>) – La cantidad del producto.</p></li>
+<li><p><strong>precio</strong> (<em>tkinter.StringVar</em>) – El precio del producto.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mensaje indicando si el producto fue agregado exitosamente o si hubo un error.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="modelo.Model.borrar">
 <span class="sig-name descname"><span class="pre">borrar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seleccion</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modelo.html#Model.borrar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modelo.Model.borrar" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#modelo.Model.borrar'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Elimina un producto de la tabla <cite>productos</cite> basado en el identificador proporcionado.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>seleccion</strong> (<em>int</em>) – El identificador del producto a eliminar.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Mensaje indicando si el producto fue eliminado exitosamente o si hubo un error.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="modelo.Model.conexion">
 <span class="sig-name descname"><span class="pre">conexion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modelo.html#Model.conexion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modelo.Model.conexion" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#modelo.Model.conexion'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Establece una conexión con la base de datos SQLite.</p>
+<p>Intenta conectar a una base de datos llamada “mibase.db”. En caso de error, imprime el mensaje de error.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>La conexión a la base de datos SQLite.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>sqlite3.Connection</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="modelo.Model.consultar">
 <span class="sig-name descname"><span class="pre">consultar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">producto</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/modelo.html#Model.consultar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modelo.Model.consultar" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#modelo.Model.consultar'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Consulta la tabla <cite>productos</cite> para obtener los productos que coincidan con el nombre dado.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>producto</strong> (<em>tkinter.StringVar</em>) – El nombre del producto a consultar.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Lista de tuplas con los datos de los productos que coinciden.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of tuples</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="modelo.Model.crear_tabla">
 <span class="sig-name descname"><span class="pre">crear_tabla</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modelo.html#Model.crear_tabla"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modelo.Model.crear_tabla" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#modelo.Model.crear_tabla'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Crea la tabla <cite>productos</cite> en la base de datos si no existe.</p>
+<p>La tabla <cite>productos</cite> tiene las siguientes columnas:
+- <cite>id</cite>: Identificador único del producto (clave primaria, autoincremental).
+- <cite>producto</cite>: Nombre del producto.
+- <cite>cantidad</cite>: Cantidad del producto.
+- <cite>precio</cite>: Precio del producto.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="modelo.Model.productos">
 <span class="sig-name descname"><span class="pre">productos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/modelo.html#Model.productos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#modelo.Model.productos" title="Link to this definition" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#modelo.Model.productos'"><span>#</span></a></dt>
-<dd></dd></dl>
+<dd><p>Obtiene una lista de todos los productos en la tabla <cite>productos</cite>.</p>
+<p>Ordena los productos por <cite>id</cite> en orden descendente.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Lista de tuplas con los datos de los productos.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of tuples</p>
+</dd>
+</dl>
+</dd></dl>
 </dd></dl>
 </section>
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
