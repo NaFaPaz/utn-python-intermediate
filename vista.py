@@ -1,15 +1,15 @@
 from tkinter import *
 from tkinter.messagebox import *
 from tkinter import ttk
-import modelo
 
 
 # ##############################################
 # VISTA
 # ##############################################
-class Panel:
-    def __init__(self, window):
+class View:
+    def __init__(self, window, controller):
         self.root = window
+        self.controlador = controller
         self.root.title("STOCK")
         self.titulo = Label(
             self.root,
@@ -20,16 +20,8 @@ class Panel:
         )
         self.titulo.grid(row=0, column=0, columnspan=5, pady=5, sticky=W + E)
 
-        self.objeto = modelo.Abmc()
-
-        try:
-            self.objeto.conexion()
-            self.objeto.crear_tabla()
-        except:
-            print("Error")
-
         self.producto = Label(self.root, text="Producto")
-        self.producto.grid(row=1, column=0, padx=15, pady=5, sticky=W)
+        self.producto.grid(row=1, column=0, padx=15, pady=(5, 0), sticky=W)
         self.cantidad = Label(self.root, text="Cantidad")
         self.cantidad.grid(row=2, column=0, padx=15, pady=5, sticky=W)
         self.precio = Label(self.root, text="Precio")
@@ -47,7 +39,7 @@ class Panel:
         self.error3.grid(row=3, column=2, columnspan=3)
 
         # Register validation
-        self.vcmd = self.root.register(self.validate_length)
+        self.vcmd = self.root.register(self.validar_longitud)
 
         # INPUTS
         self.entrada1 = Entry(
@@ -58,13 +50,19 @@ class Panel:
             validatecommand=(self.vcmd, "%P", 20),
         )
         self.entrada1.grid(row=1, column=1)
-        self.entrada1.bind("<Button-1>", lambda _: self.clear(self.a_val, self.error1))
+        self.entrada1.bind(
+            "<Button-1>", lambda _: self.limpiar(self.a_val, self.error1)
+        )
         self.entrada2 = Entry(self.root, textvariable=self.b_val, width=w_ancho)
         self.entrada2.grid(row=2, column=1)
-        self.entrada2.bind("<Button-1>", lambda _: self.clear(self.b_val, self.error2))
+        self.entrada2.bind(
+            "<Button-1>", lambda _: self.limpiar(self.b_val, self.error2)
+        )
         self.entrada3 = Entry(self.root, textvariable=self.c_val, width=w_ancho)
         self.entrada3.grid(row=3, column=1)
-        self.entrada3.bind("<Button-1>", lambda _: self.clear(self.c_val, self.error3))
+        self.entrada3.bind(
+            "<Button-1>", lambda _: self.limpiar(self.c_val, self.error3)
+        )
 
         # --------------------------------------------------
         # TREEVIEW
@@ -87,7 +85,7 @@ class Panel:
         scrollbar.grid(row=10, column=4, sticky="ns")
 
         def on_treeview_click(event):
-            self.clear_errors()
+            self.limpiar_errores()
 
         self.tree.bind("<Button-1>", on_treeview_click)
 
@@ -99,7 +97,7 @@ class Panel:
             self.root,
             text="Alta",
             width=w_ancho - 5,
-            command=lambda: self.validate_create(),
+            command=lambda: self.controlador.alta(),
         )
         self.boton_alta.grid(row=4, column=1, pady=5)
 
@@ -107,7 +105,7 @@ class Panel:
             self.root,
             text="Consultar",
             width=w_ancho - 5,
-            command=lambda: self.validate_query(),
+            command=lambda: self.controlador.consulta(self.a_val),
         )
         self.boton_consulta.grid(row=5, column=1, pady=5)
 
@@ -115,100 +113,53 @@ class Panel:
             self.root,
             text="Borrar",
             width=w_ancho - 5,
-            command=lambda: self.objeto.borrar(self.a_val, self.error1, self.tree),
+            command=lambda: self.controlador.borrar(),
         )
         self.boton_borrar.grid(row=6, column=1, pady=5)
 
         self.boton_listar = Button(
             self.root,
             text="Listar productos",
-            command=lambda: self.objeto.actualizar_treeview(self.tree),
+            command=lambda: self.controlador.actualizar_treeview(),
         )
         self.boton_listar.grid(row=4, column=3, pady=5)
 
         self.boton_limpiar = Button(
             self.root,
             text="Limpiar",
-            command=lambda: self.clear_all(),
+            command=lambda: self.limpiar_todo(),
         )
         self.boton_limpiar.grid(row=6, column=3, pady=5)
 
-    def clear_error(self, error):
+    def limpiar_treeview(
+        self,
+    ):
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+    def limpiar_error(self, error):
         error.config(text="")
 
-    def clear_errors(
+    def limpiar_errores(
         self,
     ):
-        self.clear_error(self.error1)
-        self.clear_error(self.error2)
-        self.clear_error(self.error3)
+        self.limpiar_error(self.error1)
+        self.limpiar_error(self.error2)
+        self.limpiar_error(self.error3)
 
-    def clear(self, input, error):
-        self.clear_error(error)
+    def limpiar(self, input, error):
+        self.limpiar_error(error)
         input.set("")
 
-    def clear_all(
+    def limpiar_todo(
         self,
     ):
-        self.clear_errors()
-        self.objeto.limpiar_treeview(self.tree)
+        self.limpiar_errores()
+        self.limpiar_treeview()
 
-    # VALIDATIONS #
-    def validate_length(self, char, max_length):
+    def validar_longitud(self, char, max_length):
         max_char = len(char)
         max_len = int(max_length)
         if max_char == max_len:
             self.error1.config(text="Maximo 20 caracteres")
         return max_char <= max_len
-
-    def is_empty(self, input):
-        return input.get().strip() == ""
-
-    def validate_create(
-        self,
-    ):
-        valid_product = self.validate_product()
-        valid_quantity = self.validate_quantity()
-        valid_price = self.validate_price()
-        if valid_product and valid_quantity and valid_price:
-            response = self.objeto.alta(self.a_val, self.b_val, self.c_val, self.tree)
-            if response:
-                self.error1.config(text=response)
-
-    def validate_query(
-        self,
-    ):
-        self.clear_error(self.error1)
-        if self.is_empty(self.a_val):
-            self.error1.config(text="Ingrese producto a consultar")
-        else:
-            response = self.objeto.consultar(self.a_val, self.tree)
-            if response != None:
-                self.error1.config(text=response)
-
-    def validate_product(
-        self,
-    ):
-        if self.is_empty(self.a_val):
-            self.error1.config(text="Ingrese producto")
-            return False
-        else:
-            return True
-
-    def validate_quantity(
-        self,
-    ):
-        if self.is_empty(self.b_val):
-            self.error2.config(text="Ingrese cantidad")
-            return False
-        else:
-            return True
-
-    def validate_price(
-        self,
-    ):
-        if self.is_empty(self.c_val):
-            self.error3.config(text="Ingrese precio")
-            return False
-        else:
-            return True

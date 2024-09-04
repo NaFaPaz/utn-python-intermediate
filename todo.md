@@ -1,4 +1,6 @@
-- [ ] validate quantity
-- [ ] validate price
-- [ ] verify MVC
-- [ ] verify POO
+- [x] validate quantity
+- [x] validate price
+- [x] verify MVC
+- [x] verify POO
+- [x] add exceptions
+- [ ] add docs (sphinx)
