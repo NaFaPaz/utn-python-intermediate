@@ -45,10 +45,13 @@ class Controller:
     ):
         self.vista.limpiar_todo()
         resultado = self.modelo.productos()
-        for fila in resultado:
-            self.vista.tree.insert(
-                "", 0, text=fila[0], values=(fila[1], fila[2], fila[3])
-            )
+        if len(resultado) <= 0:
+            self.vista.error1.config(text="No se encontraron productos")
+        else:
+            for fila in resultado:
+                self.vista.tree.insert(
+                    "", 0, text=fila[0], values=(fila[1], fila[2], fila[3])
+                )
 
     def validar_alta(
         self,
