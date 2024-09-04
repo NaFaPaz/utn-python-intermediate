@@ -16,15 +16,14 @@ class Controller:
 
     def consulta(self, producto):
         resultado = self.validar_consulta(producto)
-        if resultado:
-            if len(resultado) <= 0:
-                self.vista.error1.config(text="Producto no encontrado")
-            else:
-                self.vista.limpiar_treeview()
-                for dato in resultado:
-                    self.vista.tree.insert(
-                        "", 0, text=dato[0], values=(dato[1], dato[2], dato[3])
-                    )
+        if len(resultado) <= 0:
+            self.vista.error1.config(text="Producto no encontrado")
+        else:
+            self.vista.limpiar_treeview()
+            for dato in resultado:
+                self.vista.tree.insert(
+                    "", 0, text=dato[0], values=(dato[1], dato[2], dato[3])
+                )
 
     def borrar(
         self,
