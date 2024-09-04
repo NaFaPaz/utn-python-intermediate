@@ -120,7 +120,7 @@ class View:
         self.boton_listar = Button(
             self.root,
             text="Listar productos",
-            command=lambda: self.controlador.actualizar_treeview(),
+            command=lambda: self.controlador.listar(),
         )
         self.boton_listar.grid(row=4, column=3, pady=5)
 

@@ -40,10 +40,10 @@ class Controller:
                 self.vista.error1.config(text=resultado)
                 self.vista.limpiar_treeview()
 
-    def actualizar_treeview(
+    def listar(
         self,
     ):
-        self.vista.limpiar_treeview()
+        self.vista.limpiar_todo()
         resultado = self.modelo.productos()
         for fila in resultado:
             self.vista.tree.insert(
