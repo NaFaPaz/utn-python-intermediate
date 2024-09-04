@@ -3,4 +3,5 @@
 - [x] verify MVC
 - [x] verify POO
 - [x] add exceptions
-- [ ] add docs (sphinx)
+- [x] add docs (sphinx)
+- [ ] product update method
